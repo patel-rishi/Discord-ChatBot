@@ -1,5 +1,5 @@
 import discord
-import os, config, requests, json, random
+import config, requests, json, random
 
 client = discord.Client()
 
