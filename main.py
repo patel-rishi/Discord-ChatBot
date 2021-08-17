@@ -1,6 +1,10 @@
 import chatterbot
-import discord, shutil
-import config, requests, json, random
+import discord
+import shutil
+import config
+import requests
+import json
+import random
 
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
@@ -12,11 +16,13 @@ import numpy as np
 
 client = discord.Client()
 
+
 def get_quote():
     response = requests.get("https://zenquotes.io/api/random")
     json_data = json.loads(response.text)
     quote = json_data[0]['q'] + " -" + json_data[0]['a']
     return(quote)
+
 
 def get_cases():
     response = requests.get(config.COVID_API)
@@ -24,12 +30,15 @@ def get_cases():
     x = 0
     while json_data[x]['country'] != 'India':
         x = x + 1
-    stats = [json_data[x]['infected'],json_data[x]['recovered'],json_data[x]['deceased']]
+    stats = [json_data[x]['infected'], json_data[x]
+             ['recovered'], json_data[x]['deceased']]
     return stats
+
 
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+
 
 @client.event
 async def on_message(message):
@@ -50,10 +59,10 @@ async def on_message(message):
                 if url[0:26] == "https://cdn.discordapp.com":
                     r = requests.get(url, stream=True)
                     imageName = 'img' + '.jpg'
-                    with open(imageName,'wb+') as destination:
+                    with open(imageName, 'wb+') as destination:
                         print('Saving file ' + imageName + '...')
                         shutil.copyfileobj(r.raw, destination)
-            
+
             model = ResNet50(weights='imagenet')
 
             img_path = 'img.jpg'
@@ -69,7 +78,7 @@ async def on_message(message):
                 await message.channel.send(str(x[1]) + ' with a ' + str(int(x[2]*100)) + '% match')
             return
     else:
-        #Intro texts
+        # Intro texts
         for x in config.INTRO_ENGLISH:
             if msg.startswith(x):
                 await message.channel.send(random.choice(config.REPLY_ENGLISH))
@@ -92,6 +101,5 @@ async def on_message(message):
         # For other inputs
         else:
             await message.channel.send('Sorry, my abilities are limited since I am a bot. Ask me something else')
-                   
-client.run(config.TOKEN)
 
+client.run(config.TOKEN)
