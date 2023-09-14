@@ -1,7 +1,6 @@
 # Discord Chatbot
 
-![Chatbot](chatbot_image.png)
-
+## Table of Contents
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Usage](#usage)
